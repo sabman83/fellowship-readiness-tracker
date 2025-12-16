@@ -4,14 +4,99 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fellowship Readiness Tracker</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
     <header>
-        <h1>Fellowship Readiness Tracker</h1>
-        <p>Evaluating student readiness for tech careers</p>
+        <div class="container">
+            <h1>Fellowship Readiness Tracker</h1>
+            <p class="subtitle">Evaluating student readiness for tech careers</p>
+        </div>
     </header>
-    <main>
-        <p>Dashboard coming soon...</p>
+
+    <main class="container">
+        <!-- Job Profile Card -->
+        <section class="card" id="job-profile">
+            <div class="card-header">
+                <h2>Target Role</h2>
+            </div>
+            <div id="job-profile-content">Loading...</div>
+        </section>
+
+        <!-- Students Section -->
+        <section class="card">
+            <div class="card-header">
+                <h2>Fellows</h2>
+                <button class="btn btn-primary" onclick="openAddStudentModal()">+ Add Fellow</button>
+            </div>
+            <div class="table-wrapper">
+                <table id="students-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Skills Match</th>
+                            <th>Project Score</th>
+                            <th>Interview Avg</th>
+                            <th>Readiness Score</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="students-tbody">
+                        <tr><td colspan="6">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
     </main>
+
+    <!-- Add Student Modal -->
+    <div id="add-student-modal" class="modal hidden">
+        <div class="modal-overlay" onclick="closeAddStudentModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Fellow</h2>
+                <button class="close-btn" onclick="closeAddStudentModal()">&times;</button>
+            </div>
+            <form id="add-student-form">
+                <div class="form-group">
+                    <label for="student-name">Full Name</label>
+                    <input type="text" id="student-name" required placeholder="e.g. Alex Johnson">
+                </div>
+
+                <div class="form-group">
+                    <label>Skills</label>
+                    <p class="form-hint">Select skills the student has from the job requirements</p>
+                    <div id="skills-checkboxes" class="checkbox-grid"></div>
+                </div>
+
+                <div class="form-group">
+                    <label>Project</label>
+                    <input type="text" id="project-name" placeholder="Project name (e.g. Portfolio Site)">
+                    <div class="checklist-row">
+                        <label><input type="checkbox" id="proj-frontend"> Frontend</label>
+                        <label><input type="checkbox" id="proj-backend"> Backend</label>
+                        <label><input type="checkbox" id="proj-api-db"> API / Database</label>
+                        <label><input type="checkbox" id="proj-live-demo"> Live Demo</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Mock Interview Scores (0–100)</label>
+                    <div class="score-inputs">
+                        <input type="number" id="interview-1" min="0" max="100" placeholder="Interview 1">
+                        <input type="number" id="interview-2" min="0" max="100" placeholder="Interview 2">
+                        <input type="number" id="interview-3" min="0" max="100" placeholder="Interview 3">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeAddStudentModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Fellow</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/static/script.js"></script>
 </body>
 </html>
