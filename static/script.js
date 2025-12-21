@@ -1,0 +1,69 @@
+let jobProfile = null;
+
+async function loadJobProfile() {
+    const res = await fetch('/api/job-profile');
+    jobProfile = await res.json();
+
+    const container = document.getElementById('job-profile-content');
+    container.innerHTML = `
+        <div class="job-header">
+            <div>
+                <h3>${jobProfile.title}</h3>
+                <p class="company">${jobProfile.company}</p>
+            </div>
+        </div>
+        <p class="job-description">${jobProfile.description}</p>
+        <div class="skills-required">
+            <strong>Required Skills:</strong>
+            <div class="skill-badges">
+                ${jobProfile.required_skills.map(s => `<span class="badge">${s}</span>`).join('')}
+            </div>
+        </div>
+    `;
+
+    // Populate skills checkboxes in the add-student modal
+    const checkboxContainer = document.getElementById('skills-checkboxes');
+    checkboxContainer.innerHTML = jobProfile.required_skills.map(skill => `
+        <label class="checkbox-label">
+            <input type="checkbox" name="skill" value="${skill}">
+            ${skill}
+        </label>
+    `).join('');
+}
+
+async function loadStudents() {
+    const res = await fetch('/api/students');
+    const students = await res.json();
+
+    const tbody = document.getElementById('students-tbody');
+    if (!students.length) {
+        tbody.innerHTML = '<tr><td colspan="6">No fellows added yet.</td></tr>';
+        return;
+    }
+
+    tbody.innerHTML = students.map(s => {
+        return `
+            <tr>
+                <td><strong>${s.name}</strong></td>
+                <td>--</td>
+                <td>--</td>
+                <td>--</td>
+                <td>--</td>
+                <td><a href="/students/${s.id}" class="btn btn-sm">View</a></td>
+            </tr>
+        `;
+    }).join('');
+}
+
+function openAddStudentModal() {
+    document.getElementById('add-student-modal').classList.remove('hidden');
+}
+
+function closeAddStudentModal() {
+    document.getElementById('add-student-modal').classList.add('hidden');
+    document.getElementById('add-student-form').reset();
+}
+
+// Initialize
+loadJobProfile();
+loadStudents();
