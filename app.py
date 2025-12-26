@@ -1,6 +1,8 @@
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, request, render_template
 
 app = Flask(__name__)
+
+next_id = 6
 
 JOB_PROFILE = {
     "title": "Junior Web Developer",
@@ -138,6 +140,22 @@ def get_students():
             "interview_scores": student["interview_scores"]
         })
     return jsonify(result)
+
+
+@app.route('/api/students', methods=['POST'])
+def add_student():
+    global next_id
+    data = request.get_json()
+    new_student = {
+        "id": next_id,
+        "name": data.get("student_name", ""),
+        "skills": data.get("skills", []),
+        "projects": data.get("projects", []),
+        "interview_scores": data.get("interview_scores", [])
+    }
+    students.append(new_student)
+    next_id += 1
+    return jsonify({"id": new_student["id"], "message": "Student added"}), 201
 
 
 if __name__ == '__main__':
