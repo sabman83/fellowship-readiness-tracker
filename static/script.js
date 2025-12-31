@@ -64,6 +64,49 @@ function closeAddStudentModal() {
     document.getElementById('add-student-form').reset();
 }
 
+document.getElementById('add-student-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById('student-name').value.trim();
+    const selectedSkills = Array.from(
+        document.querySelectorAll('#skills-checkboxes input[type="checkbox"]:checked')
+    ).map(cb => cb.value);
+
+    const projectName = document.getElementById('project-name').value.trim();
+    const projects = [];
+    if (projectName) {
+        projects.push({
+            name: projectName,
+            has_frontend: document.getElementById('proj-frontend').checked,
+            has_backend: document.getElementById('proj-backend').checked,
+            has_api_db: document.getElementById('proj-api-db').checked,
+            has_live_demo: document.getElementById('proj-live-demo').checked
+        });
+    }
+
+    const i1 = parseInt(document.getElementById('interview-1').value) || 0;
+    const i2 = parseInt(document.getElementById('interview-2').value) || 0;
+    const i3 = parseInt(document.getElementById('interview-3').value) || 0;
+
+    const payload = {
+        student_name: name,
+        skills: selectedSkills,
+        projects: projects,
+        interview_scores: [i1, i2, i3].filter(s => s > 0)
+    };
+
+    const res = await fetch('/api/students', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    });
+
+    if (res.ok) {
+        closeAddStudentModal();
+        await loadStudents();
+    }
+});
+
 // Initialize
 loadJobProfile();
 loadStudents();
