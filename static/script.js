@@ -42,13 +42,14 @@ async function loadStudents() {
     }
 
     tbody.innerHTML = students.map(s => {
+        const scoreClass = s.score >= 70 ? 'score-high' : s.score >= 50 ? 'score-mid' : 'score-low';
         return `
             <tr>
                 <td><strong>${s.name}</strong></td>
-                <td>--</td>
-                <td>--</td>
-                <td>--</td>
-                <td>--</td>
+                <td>${s.skills_score.toFixed(1)}%</td>
+                <td>${s.project_score.toFixed(1)}%</td>
+                <td>${s.interview_avg.toFixed(1)}</td>
+                <td><span class="readiness-score ${scoreClass}">${s.score.toFixed(1)}%</span></td>
                 <td><a href="/students/${s.id}" class="btn btn-sm">View</a></td>
             </tr>
         `;
