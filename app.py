@@ -169,6 +169,14 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/students/<int:student_id>')
+def student_detail(student_id):
+    student = next((s for s in students if s['id'] == student_id), None)
+    if not student:
+        return "Student not found", 404
+    return render_template('student.html')
+
+
 @app.route('/api/job-profile')
 def get_job_profile():
     return jsonify(JOB_PROFILE)
@@ -188,6 +196,22 @@ def get_students():
             "interview_avg": score["interviews"]
         })
     return jsonify(result)
+
+
+@app.route('/api/students/<int:student_id>', methods=['GET'])
+def get_student(student_id):
+    student = next((s for s in students if s['id'] == student_id), None)
+    if not student:
+        return jsonify({"error": "Student not found"}), 404
+    score = calculate_readiness_score(student, JOB_PROFILE)
+    return jsonify({
+        "id": student["id"],
+        "name": student["name"],
+        "skills": student["skills"],
+        "projects": student["projects"],
+        "interview_scores": student["interview_scores"],
+        "score": score
+    })
 
 
 @app.route('/api/students', methods=['POST'])

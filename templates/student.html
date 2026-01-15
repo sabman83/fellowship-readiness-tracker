@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Detail - Fellowship Readiness Tracker</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="/" class="back-link">&larr; Back to Dashboard</a>
+            <h1 id="student-name">Loading...</h1>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Score Breakdown -->
+        <section class="card">
+            <div class="card-header"><h2>Readiness Score Breakdown</h2></div>
+            <div class="score-grid" id="score-breakdown">
+                <div class="score-card">
+                    <div class="score-label">Skills Match</div>
+                    <div class="score-value" id="score-skills">--</div>
+                </div>
+                <div class="score-card">
+                    <div class="score-label">Project Score</div>
+                    <div class="score-value" id="score-projects">--</div>
+                </div>
+                <div class="score-card">
+                    <div class="score-label">Interview Avg</div>
+                    <div class="score-value" id="score-interviews">--</div>
+                </div>
+                <div class="score-card highlight">
+                    <div class="score-label">Total Readiness</div>
+                    <div class="score-value" id="score-total">--</div>
+                </div>
+            </div>
+        </section>
+
+        <div class="two-col">
+            <!-- Skills Section -->
+            <section class="card">
+                <div class="card-header"><h2>Skills</h2></div>
+                <div id="skills-list">Loading...</div>
+            </section>
+
+            <!-- Projects Section -->
+            <section class="card">
+                <div class="card-header"><h2>Projects</h2></div>
+                <div id="projects-list">Loading...</div>
+            </section>
+        </div>
+
+        <!-- Interview Scores Section -->
+        <section class="card">
+            <div class="card-header"><h2>Mock Interviews</h2></div>
+            <div id="interview-scores-display"></div>
+        </section>
+    </main>
+
+    <script>
+        const studentId = window.location.pathname.split('/').pop();
+        let jobProfile = null;
+
+        async function loadStudentData() {
+            const [studentRes, jobRes] = await Promise.all([
+                fetch(`/api/students/${studentId}`),
+                fetch('/api/job-profile')
+            ]);
+            const data = await studentRes.json();
+            jobProfile = await jobRes.json();
+
+            document.getElementById('student-name').textContent = data.name;
+
+            // Score breakdown - using pre-computed server values for skills/projects
+            // but calculating interview average from raw scores
+            document.getElementById('score-skills').textContent = data.score.skills.toFixed(1) + '%';
+            document.getElementById('score-projects').textContent = data.score.projects.toFixed(1) + '%';
+
+            const interviewAvg = data.interview_scores.reduce((sum, s) => sum + s, 0) / data.interview_scores.length;
+            document.getElementById('score-interviews').textContent = interviewAvg.toFixed(1);
+
+            const total = (data.score.skills * 0.40) + (data.score.projects * 0.35) + (interviewAvg * 0.25);
+            document.getElementById('score-total').textContent = total.toFixed(1) + '%';
+
+            renderSkills(data.skills);
+            renderProjects(data.projects);
+            renderInterviewScores(data.interview_scores);
+        }
+
+        function renderSkills(studentSkills) {
+            const container = document.getElementById('skills-list');
+            container.innerHTML = '<p class="empty-state">Skills display coming soon.</p>';
+        }
+
+        function renderProjects(projects) {
+            const container = document.getElementById('projects-list');
+            if (!projects.length) {
+                container.innerHTML = '<p class="empty-state">No projects added.</p>';
+                return;
+            }
+            container.innerHTML = projects.map(p => `
+                <div class="project-card">
+                    <h4>${p.name}</h4>
+                </div>
+            `).join('');
+        }
+
+        function renderInterviewScores(scores) {
+            const container = document.getElementById('interview-scores-display');
+            const badges = scores.map((s, i) =>
+                `<span class="score-badge">Interview ${i + 1}: ${s}</span>`
+            ).join('');
+            container.innerHTML = `<div class="score-badges">${badges}</div>`;
+        }
+
+        loadStudentData();
+    </script>
+</body>
+</html>
