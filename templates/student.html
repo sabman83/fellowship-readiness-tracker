@@ -56,6 +56,14 @@
         <section class="card">
             <div class="card-header"><h2>Mock Interviews</h2></div>
             <div id="interview-scores-display"></div>
+            <div class="add-interview-form">
+                <h3>Add Interview Score</h3>
+                <div class="score-input-row">
+                    <input type="number" id="new-interview-score" min="0" max="100" placeholder="Score (0-100)">
+                    <button class="btn btn-primary" onclick="submitInterviewScore()">Add Score</button>
+                </div>
+                <p id="interview-message" class="form-message"></p>
+            </div>
         </section>
     </main>
 
@@ -113,6 +121,27 @@
                 `<span class="score-badge">Interview ${i + 1}: ${s}</span>`
             ).join('');
             container.innerHTML = `<div class="score-badges">${badges}</div>`;
+        }
+
+        async function submitInterviewScore() {
+            const input = document.getElementById('new-interview-score');
+            const value = parseInt(input.value);
+            if (isNaN(value) || value < 0 || value > 100) {
+                document.getElementById('interview-message').textContent = 'Please enter a score between 0 and 100.';
+                return;
+            }
+
+            // BUG 2: Sending "score" but server expects "interview_score"
+            const res = await fetch(`/api/students/${studentId}/interview`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ score: value })
+            });
+
+            const result = await res.json();
+            document.getElementById('interview-message').textContent = 'Score submitted!';
+            input.value = '';
+            await loadStudentData();
         }
 
         loadStudentData();

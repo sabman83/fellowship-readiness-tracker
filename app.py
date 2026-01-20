@@ -230,5 +230,21 @@ def add_student():
     return jsonify({"id": new_student["id"], "message": "Student added"}), 201
 
 
+@app.route('/api/students/<int:student_id>/interview', methods=['POST'])
+def add_interview_score(student_id):
+    student = next((s for s in students if s['id'] == student_id), None)
+    if not student:
+        return jsonify({"error": "Student not found"}), 404
+    data = request.get_json()
+    # BUG 2: JS sends "score" but we expect "interview_score"
+    score = data.get("interview_score")
+    if score is not None:
+        student["interview_scores"].append(int(score))
+    return jsonify({
+        "message": "Interview score recorded",
+        "scores": student["interview_scores"]
+    })
+
+
 if __name__ == '__main__':
     app.run(debug=True)
