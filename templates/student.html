@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Detail - Fellowship Readiness Tracker</title>
     <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <header>
@@ -56,6 +57,9 @@
         <section class="card">
             <div class="card-header"><h2>Mock Interviews</h2></div>
             <div id="interview-scores-display"></div>
+            <div class="chart-container">
+                <canvas id="interview-chart"></canvas>
+            </div>
             <div class="add-interview-form">
                 <h3>Add Interview Score</h3>
                 <div class="score-input-row">
@@ -69,6 +73,7 @@
 
     <script>
         const studentId = window.location.pathname.split('/').pop();
+        let interviewChart = null;
         let jobProfile = null;
 
         async function loadStudentData() {
@@ -95,6 +100,32 @@
             renderSkills(data.skills);
             renderProjects(data.projects);
             renderInterviewScores(data.interview_scores);
+            renderChart(data.interview_scores);
+        }
+
+        function renderChart(scores) {
+            const ctx = document.getElementById('interview-chart').getContext('2d');
+            if (interviewChart) interviewChart.destroy();
+            interviewChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: scores.map((_, i) => `Interview ${i + 1}`),
+                    datasets: [{
+                        label: 'Interview Score',
+                        data: scores,
+                        borderColor: '#4f46e5',
+                        backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { min: 0, max: 100 }
+                    }
+                }
+            });
         }
 
         function renderSkills(studentSkills) {
