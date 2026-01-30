@@ -1,6 +1,11 @@
 from flask import Flask, jsonify, request, render_template
+import logging
 
 app = Flask(__name__)
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
 
 next_id = 6
 
@@ -195,6 +200,7 @@ def get_students():
             "project_score": score["projects"],
             "interview_avg": score["interviews"]
         })
+    logging.info(f"Fetched {len(students)} students")
     return jsonify(result)
 
 
@@ -227,6 +233,7 @@ def add_student():
     }
     students.append(new_student)
     next_id += 1
+    logging.info(f"Added student: {new_student['name']} (id={new_student['id']})")
     return jsonify({"id": new_student["id"], "message": "Student added"}), 201
 
 
@@ -240,6 +247,9 @@ def add_interview_score(student_id):
     score = data.get("interview_score")
     if score is not None:
         student["interview_scores"].append(int(score))
+        logging.info(f"Added interview score {score} for student {student_id}")
+    else:
+        logging.warning(f"Received interview submission with missing score field for student {student_id}")
     return jsonify({
         "message": "Interview score recorded",
         "scores": student["interview_scores"]
