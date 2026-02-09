@@ -130,7 +130,15 @@
 
         function renderSkills(studentSkills) {
             const container = document.getElementById('skills-list');
-            container.innerHTML = '<p class="empty-state">Skills display coming soon.</p>';
+            if (!jobProfile) return;
+            const html = jobProfile.required_skills.map(skill => {
+                const has = studentSkills.includes(skill);
+                return `<div class="skill-item ${has ? 'matched' : 'missing'}">
+                    <span class="skill-icon">${has ? '✓' : '✗'}</span>
+                    <span>${skill}</span>
+                </div>`;
+            }).join('');
+            container.innerHTML = html;
         }
 
         function renderProjects(projects) {
