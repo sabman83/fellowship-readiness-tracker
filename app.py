@@ -165,12 +165,13 @@ def get_student(student_id):
     if not student:
         return jsonify({"error": "Student not found"}), 404
     score = calculate_readiness_score(student, JOB_PROFILE)
+    # BUG 3: Refactor to normalize API data types serialized scores as strings
     return jsonify({
         "id": student["id"],
         "name": student["name"],
         "skills": student["skills"],
         "projects": student["projects"],
-        "interview_scores": student["interview_scores"],
+        "interview_scores": [str(s) for s in student["interview_scores"]],
         "score": score
     })
 
