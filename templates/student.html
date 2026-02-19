@@ -147,11 +147,18 @@
                 container.innerHTML = '<p class="empty-state">No projects added.</p>';
                 return;
             }
-            container.innerHTML = projects.map(p => `
+            const html = projects.map(p => `
                 <div class="project-card">
                     <h4>${p.name}</h4>
+                    <div class="project-checklist">
+                        <span class="${p.has_frontend ? 'check-yes' : 'check-no'}">Frontend</span>
+                        <span class="${p.has_backend ? 'check-yes' : 'check-no'}">Backend</span>
+                        <span class="${p.has_api_db ? 'check-yes' : 'check-no'}">API/DB</span>
+                        <span class="${p.has_live_demo ? 'check-yes' : 'check-no'}">Live Demo</span>
+                    </div>
                 </div>
             `).join('');
+            container.innerHTML = html;
         }
 
         function renderInterviewScores(scores) {
