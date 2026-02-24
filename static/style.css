@@ -575,3 +575,39 @@ tbody td {
         flex-direction: column;
     }
 }
+
+/* Additional spacing and polish */
+main.container {
+    padding-top: 0.5rem;
+    padding-bottom: 2rem;
+}
+
+.card + .card {
+    margin-top: 0;
+}
+
+thead th:first-child,
+tbody td:first-child {
+    padding-left: 1.25rem;
+}
+
+.score-card .score-value {
+    margin-top: 0.25rem;
+}
+
+.project-card:last-child {
+    margin-bottom: 0;
+}
+
+.score-input-row .btn {
+    white-space: nowrap;
+}
+
+header .container {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+}
+
+.modal-content {
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
