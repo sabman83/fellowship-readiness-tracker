@@ -215,6 +215,32 @@ cd fellowship-readiness-tracker
 >
 > Then run the `git clone` command above.
 
+### Open the project in VS Code
+
+Now open the project folder in VS Code so you can browse and edit the code:
+
+**Option A — From the terminal:**
+
+```bash
+code .
+```
+
+This opens VS Code with the current folder. If this command does not work, see the troubleshooting note below.
+
+**Option B — From VS Code:**
+
+1. Open VS Code
+2. Go to **File > Open Folder** (on Mac: **File > Open...**)
+3. Navigate to the `fellowship-readiness-tracker` folder you just cloned and select it
+
+> **Troubleshooting the `code` command:**
+>
+> If you get "command not found" when running `code .`:
+>
+> - **Mac:** Open VS Code, press `Cmd + Shift + P`, type **"Shell Command: Install 'code' command in PATH"**, and select it. Then restart your terminal and try again.
+> - **Windows:** The `code` command is usually set up automatically during installation. If it is not working, try closing and reopening your Command Prompt. If it still does not work, use Option B above.
+> - **Linux:** The `code` command is usually available after installing VS Code via your package manager. If not, use Option B above.
+
 ---
 
 ## Step 6: Install the Python Dependencies
