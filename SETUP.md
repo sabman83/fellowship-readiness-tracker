@@ -324,6 +324,19 @@ You do not need to understand what everything does yet — we will cover it in t
 
 ---
 
+## Before the Workshop — Pull the Latest Code
+
+The project may be updated between now and the workshop. On the day of (or the night before), open your terminal, navigate to the project folder, and run:
+
+```bash
+cd fellowship-readiness-tracker
+git pull
+```
+
+This makes sure you have the latest version of the code.
+
+---
+
 ## You Are All Set!
 
 If you completed all the steps above and the app loads in your browser, you are ready for the workshop. If anything did not work, reach out before the workshop so we can help.
