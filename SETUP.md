@@ -308,6 +308,8 @@ You should see the **Fellowship Readiness Tracker** dashboard with a list of stu
 
 We will use browser Developer Tools during the workshop for debugging. Let us make sure they work.
 
+> **Important:** Please use **Chrome** or **Firefox** for the workshop. Their developer tools are more intuitive and easier to follow along with. Safari or other browsers may work differently.
+
 1. Open **Chrome** or **Firefox** (either is fine)
 2. Go to any webpage
 3. Open Developer Tools:
