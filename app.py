@@ -165,7 +165,6 @@ def get_student(student_id):
     if not student:
         return jsonify({"error": "Student not found"}), 404
     score = calculate_readiness_score(student, JOB_PROFILE)
-    # BUG 3: Refactor to normalize API data types serialized scores as strings
     return jsonify({
         "id": student["id"],
         "name": student["name"],
@@ -199,7 +198,6 @@ def add_interview_score(student_id):
     if not student:
         return jsonify({"error": "Student not found"}), 404
     data = request.get_json()
-    # BUG 2: JS sends "score" but we expect "interview_score"
     score = data.get("interview_score")
     if score is not None:
         student["interview_scores"].append(int(score))

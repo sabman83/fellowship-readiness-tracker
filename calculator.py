@@ -5,7 +5,7 @@ def calculate_readiness_score(student, job_profile):
     # Skills score: percentage of required skills the student has
     matched_skills = [s for s in student_skills if s in required_skills]
     if required_skills:
-        skills_score = len(matched_skills) / len(required_skills)  # BUG 1: missing * 100
+        skills_score = len(matched_skills) / len(required_skills)
     else:
         skills_score = 0
 
