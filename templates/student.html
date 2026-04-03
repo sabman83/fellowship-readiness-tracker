@@ -177,7 +177,6 @@
                 return;
             }
 
-            // BUG 2: Sending "score" but server expects "interview_score"
             const res = await fetch(`/api/students/${studentId}/interview`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
