@@ -60,7 +60,7 @@ students = [
                 "has_live_demo": True
             }
         ],
-        "interview_scores": [65, 70, 62]
+        "interview_scores": [65, 70]
     },
     {
         "id": 3,
